@@ -19,8 +19,9 @@ refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoad.addEventListener("click", onLoadMoreClick);
 
 function createLoader() {
-  refs.loader.classList.toggle('hidden');
+    refs.loader.classList.toggle('hidden');
 }
+
 
 export let searchQuery = '';
 export let pageOf = 1;
@@ -43,9 +44,11 @@ async function onFormSubmit(e) {
         try {
             pageOf = 1;
             const data = await getImages();
+            createLoader();
             refs.gallery.innerHTML = '';
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
+                btnLoad.style.display = 'block';
             } else {
             refs.gallery.innerHTML = '';
             iziToast.show({
@@ -58,7 +61,8 @@ async function onFormSubmit(e) {
         } catch (error) {
             console.error('Error data:', error);
         } 
-    }
+    }    
+  
     e.target.reset();
 }
 

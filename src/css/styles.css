@@ -72,6 +72,7 @@ button {
   padding: 0;
   margin-bottom: 44px;
   margin-top: 32px;
+  display: none;
 }
 
 .btn-box {
