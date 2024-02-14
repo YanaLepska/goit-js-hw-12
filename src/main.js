@@ -43,9 +43,9 @@ async function onFormSubmit(e) {
         try {
             pageOf = 1;
             const data = await getImages();
-            createLoader();
+            refs.gallery.innerHTML = '';
             if (data.hits.length > 0) {
-               renderGalleryItem(data.hits);
+                renderGalleryItem(data.hits);
             } else {
             refs.gallery.innerHTML = '';
             iziToast.show({

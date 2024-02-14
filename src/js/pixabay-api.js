@@ -5,8 +5,8 @@ import { pageOf } from '../main';
 
 export async function getImages() {
     
-    // axios.defaults.baseURL = 'https://pixabay.com/api/';
-    const response = await axios.get('https://pixabay.com/api/', {
+    axios.defaults.baseURL = 'https://pixabay.com/api/';
+    const response = await axios.get('', {
     params: {
     key: '42132229-e88b92984f0d2a7001cb07c65',
     image_type: 'photo',
