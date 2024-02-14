@@ -33,6 +33,6 @@ let galleryA = new SimpleLightbox('.gallery a', {
 
 export function renderGalleryItem(images) {
     const markup = images.map(galleryTemplate).join('');
-    refs.gallery.innerHTML = markup;   
+    refs.gallery.insertAdjacentHTML("beforeend", markup);   
    galleryA.refresh();
 }

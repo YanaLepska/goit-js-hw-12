@@ -66,6 +66,20 @@ button {
   cursor: pointer;
 }
 
+.load-more {
+  width: 125px;
+  height: 40px;
+  padding: 0;
+  margin-bottom: 44px;
+  margin-top: 32px;
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 input:hover {
   border: 1px solid #000;
 }
@@ -112,16 +126,20 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 15px;
-  font-size: 15px;
-  max-width: 320px;
-  justify-content: space-evenly;
+  font-size: 12px;
+  justify-content: space-around;
   color: #064c3e;
-  font-weight: 450;
+  font-weight: 600;
 }
 
 .info-box span {
-  font-weight: 600;
-  color: #242424;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+  min-width: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hidden {
