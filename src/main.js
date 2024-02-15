@@ -79,10 +79,9 @@ if (galleryItem) {
 
 async function onLoadMoreClick() {
     createLoader();
-    pageOf += 1;
     const data = await getImages();
     renderGalleryItem(data.hits);
-
+    pageOf += 1;
     checkEndOfSearchResults(data.totalHits, pageOf);
     createLoader();
             
