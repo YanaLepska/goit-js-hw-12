@@ -3,6 +3,7 @@ import axios from 'axios';
 import { searchQuery } from '../main';
 import { pageOf } from '../main';
 
+export const Per_Page = 15;
 export async function getImages() {
     
     axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -14,7 +15,7 @@ export async function getImages() {
     safesearch: 'true',
     q: searchQuery,
     page: pageOf,
-    per_page: 15,
+    per_page: Per_Page,
     }
     });
     return response.data;

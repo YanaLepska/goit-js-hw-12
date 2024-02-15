@@ -5,6 +5,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 import { renderGalleryItem } from "./js/render-functions";
 import { getImages } from "./js/pixabay-api";
+import { Per_Page } from "./js/pixabay-api";
 
 
 export const refs = {
@@ -15,16 +16,16 @@ export const refs = {
     btnLoad: document.querySelector('.load-more'),
 }
 
+export let searchQuery = '';
+export let pageOf = 1;
+ let totalResult = 0;
+
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoad.addEventListener("click", onLoadMoreClick);
 
 function createLoader() {
     refs.loader.classList.toggle('hidden');
 }
-
-
-export let searchQuery = '';
-export let pageOf = 1;
 
 async function onFormSubmit(e) {
     e.preventDefault();
@@ -42,10 +43,11 @@ async function onFormSubmit(e) {
     }
     else {
         try {
+            refs.gallery.innerHTML = '';
+            refs.btnLoad.style.display = "none";
             pageOf = 1;
             const data = await getImages();
-            
-            refs.gallery.innerHTML = '';
+            statusBtn();
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
@@ -63,14 +65,34 @@ async function onFormSubmit(e) {
             console.error('Error data:', error);
         } 
     }    
-  
+  createLoader();
     e.target.reset();
 }
 
 async function onLoadMoreClick() {
-     
+    createLoader();
+    statusBtn();
     pageOf += 1;
     const data = await getImages();
     renderGalleryItem(data.hits);
+    createLoader();
             
+}
+
+async function statusBtn() {
+    const data = await getImages();
+    totalResult = data.totalHits;
+    const maxPage = Math.ceil(totalResult / Per_Page);
+    if (totalResult !== undefined && totalResult <= pageOf * Per_Page) {
+        
+    refs.btnLoad.style.display = 'none';
+        
+        // Виводимо повідомлення про досягнення кінця результатів пошуку
+        iziToast.show({
+            message: "We're sorry, but you've reached the end of search results.",
+            messageColor: '#FFFFFF',
+            backgroundColor: '#B51B1B',
+            position: 'topRight',
+        });
+    } 
 }
