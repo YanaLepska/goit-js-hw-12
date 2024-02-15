@@ -1,12 +1,12 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-
-
 import { renderGalleryItem } from "./js/render-functions";
 import { getImages } from "./js/pixabay-api";
 import { Per_Page } from "./js/pixabay-api";
 
+export let searchQuery = '';
+export let pageOf = 1;
 
 export const refs = {
     formEl: document.querySelector('.form'),
@@ -14,18 +14,11 @@ export const refs = {
     gallery: document.querySelector('.gallery'),
     loader: document.querySelector('.loader'),
     btnLoad: document.querySelector('.load-more'),
+    galleryItem: document.querySelector('.gallery-item'),
 }
-
-export let searchQuery = '';
-export let pageOf = 1;
- let totalResult = 0;
 
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoad.addEventListener("click", onLoadMoreClick);
-
-function createLoader() {
-    refs.loader.classList.toggle('hidden');
-}
 
 async function onFormSubmit(e) {
     e.preventDefault();
@@ -47,10 +40,15 @@ async function onFormSubmit(e) {
             refs.btnLoad.style.display = "none";
             pageOf = 1;
             const data = await getImages();
-            statusBtn();
+            
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
+                const galleryItemHeight = refs.galleryItem.getBoundingClientRect().height;
+                window.scrollBy({
+                    top: galleryItemHeight*2,
+                    behavior: 'smooth',
+                });
             } else {
                 refs.gallery.innerHTML = '';
                 refs.btnLoad.style.display = "none";
@@ -60,7 +58,8 @@ async function onFormSubmit(e) {
             backgroundColor: '#B51B1B',
             position: 'topRight',
             });
-            } 
+            }
+            checkEndOfSearchResults(data.totalHits, pageOf);
         } catch (error) {
             console.error('Error data:', error);
         } 
@@ -71,28 +70,29 @@ async function onFormSubmit(e) {
 
 async function onLoadMoreClick() {
     createLoader();
-    statusBtn();
-    pageOf += 1;
     const data = await getImages();
     renderGalleryItem(data.hits);
+    pageOf += 1;
+    checkEndOfSearchResults(data.totalHits, pageOf);
     createLoader();
             
 }
 
-async function statusBtn() {
-    const data = await getImages();
-    totalResult = data.totalHits;
-    const maxPage = Math.ceil(totalResult / Per_Page);
-    if (totalResult !== undefined && totalResult <= pageOf * Per_Page) {
-        
-    refs.btnLoad.style.display = 'none';
-        
-        // Виводимо повідомлення про досягнення кінця результатів пошуку
+function createLoader() {
+    refs.loader.classList.toggle('hidden');
+}
+
+
+function checkEndOfSearchResults(totalHits, pageOf) {
+    const maxPage = Math.ceil(totalHits / Per_Page);
+    if (maxPage === pageOf) {
+        refs.btnLoad.style.display = 'none';
         iziToast.show({
             message: "We're sorry, but you've reached the end of search results.",
             messageColor: '#FFFFFF',
             backgroundColor: '#B51B1B',
             position: 'topRight',
         });
-    } 
+    }
 }
+
