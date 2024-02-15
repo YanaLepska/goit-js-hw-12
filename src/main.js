@@ -52,8 +52,8 @@ async function onFormSubmit(e) {
                 const galleryItemHeight = galleryItem.getBoundingClientRect().height;
 
                 window.scrollBy({
-                    top: galleryItemHeight * 2, 
-                    behavior: 'smooth',
+                top: galleryItemHeight * 2, 
+                behavior: 'smooth',
                 });
             }
             } else {
