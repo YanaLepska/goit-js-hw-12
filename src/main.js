@@ -42,22 +42,20 @@ async function onFormSubmit(e) {
             refs.gallery.innerHTML = '';
             refs.btnLoad.style.display = "none";
             pageOf = 1;
-            const data = await getImages();
+            const data = await getImages(pageOf,  searchQuery);
             
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
-               
 
-if (galleryItem) {
-    const galleryItemHeight = galleryItem.getBoundingClientRect().height;
+            if (galleryItem) {
+                const galleryItemHeight = galleryItem.getBoundingClientRect().height;
 
-    
-    window.scrollBy({
-        top: galleryItemHeight * 2, 
-        behavior: 'smooth',
-    });
-}
+                window.scrollBy({
+                    top: galleryItemHeight * 2, 
+                    behavior: 'smooth',
+                });
+            }
             } else {
                 refs.gallery.innerHTML = '';
                 refs.btnLoad.style.display = "none";
@@ -79,9 +77,10 @@ if (galleryItem) {
 
 async function onLoadMoreClick() {
     createLoader();
+    pageOf += 1;
     const data = await getImages();
     renderGalleryItem(data.hits);
-    pageOf += 1;
+   
     checkEndOfSearchResults(data.totalHits, pageOf);
     createLoader();
             
