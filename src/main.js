@@ -17,6 +17,8 @@ export const refs = {
  
 }
 
+ const galleryItem = refs.gallery.querySelector('.gallery-item');
+
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoad.addEventListener("click", onLoadMoreClick);
 
@@ -45,11 +47,17 @@ async function onFormSubmit(e) {
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
-                const galleryItemHeight = refs.gallery.querySelector('.gallery-item').getBoundingClientRect().height;
-                window.scrollBy({
-                    top: galleryItemHeight*2,
-                    behavior: 'smooth',
-                });
+               
+
+if (galleryItem) {
+    const galleryItemHeight = galleryItem.getBoundingClientRect().height;
+
+    
+    window.scrollBy({
+        top: galleryItemHeight * 2, 
+        behavior: 'smooth',
+    });
+}
             } else {
                 refs.gallery.innerHTML = '';
                 refs.btnLoad.style.display = "none";
