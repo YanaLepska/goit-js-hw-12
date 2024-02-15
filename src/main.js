@@ -14,11 +14,12 @@ export const refs = {
     gallery: document.querySelector('.gallery'),
     loader: document.querySelector('.loader'),
     btnLoad: document.querySelector('.load-more'),
-    galleryItem: document.querySelector('.gallery-item'),
+ 
 }
 
 refs.formEl.addEventListener("submit", onFormSubmit);
 refs.btnLoad.addEventListener("click", onLoadMoreClick);
+
 
 async function onFormSubmit(e) {
     e.preventDefault();
@@ -44,7 +45,7 @@ async function onFormSubmit(e) {
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
-                const galleryItemHeight = refs.galleryItem.getBoundingClientRect().height;
+                const galleryItemHeight = refs.gallery.querySelector('.gallery-item').getBoundingClientRect().height;
                 window.scrollBy({
                     top: galleryItemHeight*2,
                     behavior: 'smooth',
