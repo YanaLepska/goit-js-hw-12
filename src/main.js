@@ -44,13 +44,14 @@ async function onFormSubmit(e) {
         try {
             pageOf = 1;
             const data = await getImages();
-            createLoader();
+            
             refs.gallery.innerHTML = '';
             if (data.hits.length > 0) {
                 renderGalleryItem(data.hits);
                 refs.btnLoad.style.display = "block";
             } else {
-            refs.gallery.innerHTML = '';
+                refs.gallery.innerHTML = '';
+                refs.btnLoad.style.display = "none";
             iziToast.show({
             message: 'Sorry, there are no images matching your search query. Please try again!',
             messageColor: '#FFFFFF',
@@ -67,7 +68,7 @@ async function onFormSubmit(e) {
 }
 
 async function onLoadMoreClick() {
-     createLoader();
+     
     pageOf += 1;
     const data = await getImages();
     renderGalleryItem(data.hits);
